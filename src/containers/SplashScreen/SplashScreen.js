@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, Text, View, Image } from 'react-native';
+import { connect } from "react-redux";
+import { getJoke } from "../../store/actions/userAction";
 
-export default class HelloWorldApp extends Component {
+
+
+class SplashScreen extends Component {
   static navigationOptions = {
     title: 'Home',
     headerRight: (
@@ -15,7 +19,12 @@ export default class HelloWorldApp extends Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Your app is coming alive</Text> 
+        <Text>Your app is coming alive</Text>
+        <Text>{this.props.user.joke}</Text>
+        <Button
+          title="Change the joke"
+          onPress={() => this.props.getJoke()}
+        />
         <Button
           title="Go to Login"
           onPress={() => this.props.navigation.navigate('LoginScreen')}
@@ -24,3 +33,16 @@ export default class HelloWorldApp extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getJoke: () => dispatch(getJoke()),
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)
